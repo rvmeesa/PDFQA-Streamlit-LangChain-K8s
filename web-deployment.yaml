@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: rag-chatbot:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8501
+        resources:
+          requests:
+            cpu: "100m"
+          limits:
+            cpu: "500m"
+        env:
+        - name: MONGO_URI
+          value: "mongodb://admin:password@mongodb-service:27017/"
+        - name: OLLAMA_HOST
+          value: "ollama-service:11434"
